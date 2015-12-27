@@ -34,7 +34,5 @@ dat2 <- subset(dat1,select=c(colkeep[,1],562:563))
   
 ## Compute means by subjectID and activity then output to pipe-delimited text file
 meanset <- with(dat2,aggregate(dat2,list(activitycat=activity,subjectIDcat=subjectID),mean))
+  names(meanset)[1:68] <- paste("MEAN",names(meanset[1:68]),sep="")
   write.table(cbind(meanset[,69:70],meanset[,3:67]),file="../meanset.txt",sep="|",row.name=FALSE)
-
-## Create kernel of data dictionary by writing field names to file
-write.table(as.data.frame(cbind(colkeep[,2],features[grep("mean\\()|std\\()",features$V2,fixed=F),2])),file="../dictionary.csv",sep=",",row.name=FALSE)
