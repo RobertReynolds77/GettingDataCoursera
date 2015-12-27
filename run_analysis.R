@@ -11,6 +11,10 @@ testy <- fread("test/y_test.txt"); names(testy)[1] <- "activity"
 trainsubjects <- fread("train/subject_train.txt") ; names(trainsubjects)[1] <- "subjectID"
 testsubjects <- fread("test/subject_test.txt") ; names(testsubjects)[1] <- "subjectID"
 
+## Read in the activity labels
+activities <- fread("activity_labels.txt")
+  names(activities) <- c("activity","ActivityName")
+
 ## Attach the targets to the features
 trainxy <- cbind(trainx,trainy)
 testxy <- cbind(testx,testy)
@@ -32,7 +36,10 @@ colkeep <- features[grep("mean\\()|std\\()",features$V2,fixed=F),]
 dat2 <- subset(dat1,select=c(colkeep[,1],562:563))
   names(dat2)[1:(ncol(dat2)-2)] <- colkeep[,2]
   
-## Compute means by subjectID and activity then output to pipe-delimited text file
+## Compute means by subjectID and activity then merge activity names
 meanset <- with(dat2,aggregate(dat2,list(activitycat=activity,subjectIDcat=subjectID),mean))
   names(meanset)[1:68] <- paste("MEAN",names(meanset[1:68]),sep="")
-  write.table(cbind(meanset[,69:70],meanset[,3:67]),file="../meanset.txt",sep="|",row.name=FALSE)
+meanset_final <- merge(meanset,activities,by="activity")
+
+## Output to pipe-delimited text file
+write.table(cbind(meanset_final[,c(70,1,71)],meanset_final[,3:69]),file="../meanset.txt",sep="|",row.name=FALSE)

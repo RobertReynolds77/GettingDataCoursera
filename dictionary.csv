@@ -1,5 +1,8 @@
 Data Dictionary for meanset.txt,
 FEATURE,DEFINITION
+subjectID,Unique identifer for volunteers
+activity,Numeric code for activity
+ActivityName,Name of activity
 MEANtBodyAccMeanX,Mean of tBodyAcc-mean()-X
 MEANtBodyAccMeanY,Mean of tBodyAcc-mean()-Y
 MEANtBodyAccMeanZ,Mean of tBodyAcc-mean()-Z
